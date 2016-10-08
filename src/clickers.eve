@@ -1,0 +1,45 @@
+Create initial clicker
+```
+commit
+  [#clicker index: 1, value: 0]
+```
+
+Show clickers
+```
+search
+  clicker = [#clicker index, value]
+bind @browser
+  [#button #clicker clicker, sort: index, text: value]
+```
+
+Show adder
+```
+commit @browser
+  [#button #adder text: "add", sort: 0]
+```
+
+Handle clicks on clickers
+```
+search (@browser, @session)
+  [#click element: [#clicker clicker]]
+commit
+  clicker <- [value: clicker.value + 1]
+```
+
+Handle clicks on adder
+```
+search (@browser, @session)
+  [#click element: [#adder]]
+  clicker = [#clicker index]
+  next-index = max[value: index, given: clicker] + 1
+commit
+  [#clicker index: next-index, value: 0]
+```
+
+Events hack
+```
+search
+  click = [#click]
+commit
+  click := none
+```
