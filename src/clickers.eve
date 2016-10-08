@@ -29,7 +29,7 @@ Handle +/- clicks
 search (@browser, @session)
   [#click element: [#stepper counter step]]
 commit
-  counter <- [value: counter.value + step]
+  counter.value := counter.value + step
 ```
 
 Handle "add counter" clicks
