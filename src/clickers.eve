@@ -36,8 +36,7 @@ Handle "add counter" clicks
 ```
 search @event @session @browser
   [#click element: [#add-counter]]
-  counter = [#counter index]
-  next-index = max[value: index, given: counter] + 1
+  index = count[given: [#counter]] + 1
 commit
-  [#counter index: next-index, value: 0]
+  [#counter index, value: 0]
 ```
