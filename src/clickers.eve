@@ -40,3 +40,42 @@ search @event @session @browser
 commit
   [#counter index, value: 0]
 ```
+
+
+## Debugger
+
+Initialize debugger
+```
+commit
+  [#debugger #index value: 0]
+```
+
+Capture all clicks
+```
+search @event @browser @session
+  [#click element]
+  debugger = [#debugger #index value: index]
+commit
+  [#debugger #event element, index, type: "click"]
+commit
+  debugger.value := index + 1
+```
+
+Draw debugger UI
+```
+bind @browser
+  [#div children:
+    [#h3 text: "debugger"]
+    [#div #debugger #log]
+  ]
+```
+
+Draw all captured clicks
+```
+search @session @browser
+  [#debugger #event element type index]
+  lookup[record: element, attribute, value]
+  log = [#debugger #log]
+bind @browser
+  log.children += [#div #debugger sort: index, text: "{{type}} on {{element}}, {{attribute}}: {{value}}"]
+```
