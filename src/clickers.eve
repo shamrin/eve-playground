@@ -53,10 +53,10 @@ commit
 Capture all clicks
 ```
 search @event @browser @session
-  [#click element]
+  event = [#click element]
   debugger = [#debugger #index value: index]
 commit
-  [#debugger #event element, index, type: "click"]
+  [#debugger #event index, event, element, type: "click"]
 commit
   debugger.value := index + 1
 ```
@@ -74,8 +74,16 @@ Draw all captured clicks
 ```
 search @session @browser
   [#debugger #event element type index]
-  lookup[record: element, attribute, value]
   log = [#debugger #log]
 bind @browser
-  log.children += [#div #debugger sort: index, text: "{{type}} on {{element}}, {{attribute}}: {{value}}"]
+  log.children += [#div #event-ui type, element, sort: index, text: "{{type}} on {{element}}"]
+```
+
+Show click details
+```
+search @session @browser
+  parent = [#event-ui element type]
+  lookup[record: element, attribute, value]
+bind @browser
+  parent.children += [#span attribute value text: ", {{attribute}}: {{value}}"]
 ```
